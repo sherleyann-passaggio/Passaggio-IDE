@@ -12,7 +12,7 @@ services:
   - type: web
     name: passaggio-automation
     runtime: docker
-    dockerfilePath: ./Dockerfile
+    dockerfilePath: ./automation/Dockerfile
     repo: https://github.com/sherleyann-passaggio/Passaggio-IDE  # Your GitHub repo
     branch: main
     healthCheckPath: /
@@ -38,8 +38,8 @@ services:
       # ── Add any additional secrets below with sync: false ──
     disks:
       - name: automation-data
-        mountPath: /app/scripts
+        mountPath: /app/automation/scripts
         sizeGB: 1
       - name: automation-media
-        mountPath: /app/public/images
+        mountPath: /app/automation/public/images
         sizeGB: 2
