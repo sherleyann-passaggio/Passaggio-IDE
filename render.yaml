@@ -36,10 +36,7 @@ services:
       - key: OPENROUTER_API_KEY
         sync: false
       # ── Add any additional secrets below with sync: false ──
-    disks:
-      - name: automation-data
-        mountPath: /app/automation/scripts
-        sizeGB: 1
-      - name: automation-media
-        mountPath: /app/automation/public/images
-        sizeGB: 2
+    disk:
+      name: automation-data
+      mountPath: /app/automation/scripts
+      sizeGB: 1
