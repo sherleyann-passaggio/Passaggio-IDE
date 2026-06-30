@@ -1,0 +1,12 @@
+wtf:
+  refreshInterval: 1
+
+modules:
+  clock:
+    type: clock
+    enabled: true
+    position:
+      top: 0
+      left: 0
+      height: 1
+      width: 15

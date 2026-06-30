@@ -1,0 +1,51 @@
+# ── Credentials & Environment ──
+.env
+.env.local
+.env.*.local
+
+# ── Node / Build Artifacts ──
+node_modules/
+out/
+dist/
+build/
+*.log
+
+# ── System Files ──
+.DS_Store
+Thumbs.db
+
+# ── IDE ──
+.vscode/settings.json
+.idea/
+
+# ── Google Cloud SDK (bundled) ──
+google-cloud-sdk/
+vendor/google-cloud-sdk/
+
+# ── Cache ──
+.passaggio_cache/
+__pycache__/
+
+# ── Client Intake Data ──
+client_intake/
+
+# ── Automation Runtime Data ──
+automation/scripts/
+automation/processed_scripts.json
+automation/public/images/
+
+# ── Exposed Credentials (never commit) ──
+deprecated/gmail_client.py
+read_docs.py
+Building Obsidian/Obsidian Control Center/.obsidian/plugins/systemsculpt-ai/
+
+# ── Large Binaries / Vendored SDKs ──
+google-cloud-cli-darwin-x86.tar.gz
+vendor/google-cloud-cli-darwin-x86_64.tar.gz
+vendor/google-cloud-cli-linux-x86.tar.gz
+
+# ── Obsidian Smart Environment Cache ──
+Building Obsidian/Obsidian Control Center/.smart-env/
+
+# ── Large AI Model Binaries ──
+Woosh/checkpoints/

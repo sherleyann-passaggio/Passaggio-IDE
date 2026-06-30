@@ -1,0 +1,96 @@
+To turn that **Vapi System Prompt** into a functional, professional **Squarespace Widget**, you don't just paste the text—you create a "Command Center" interface. 
+
+Below is the **Squarespace Code Block** that packages the **Intake Agent** into a high-converting, professional widget.
+
+### The "Autonomous Agent" Squarespace Widget
+
+1.  **Add a Code Block** to your Squarespace page.
+2.  **Paste this HTML/CSS:**
+
+```html
+<div id="vapi-widget-container" class="agency-intake-widget">
+  <div class="header">
+    <h3>🔴 Live: Intake Specialist</h3>
+    <p>Get a custom-built AI solution for your business in 24 hours.</p>
+  </div>
+  
+  <div id="chat-status" class="status-indicator">● Standby for Voice Interaction</div>
+  
+  <button id="start-voice-btn" class="agency-button">
+    🎙️ Start Voice Consultation
+  </button>
+
+  <div class="upload-section">
+    <label>📁 Upload Project Brief (Optional)</label>
+    <input type="file" id="client-docs" class="file-input">
+  </div>
+</div>
+
+<style>
+.agency-intake-widget {
+  background: #111;
+  color: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  border: 1px solid #333;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+.agency-button {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 100%;
+  margin: 20px 0;
+}
+.agency-button:hover { background: #0056b3; }
+.status-indicator { font-size: 0.8em; color: #00ff00; margin-bottom: 10px; }
+.file-input { display: block; margin: 10px auto; color: #ccc; }
+</style>
+```
+
+### The "Glue" Script (Paste into **Settings > Developer Tools > Code Injection > Footer**)
+
+This script connects your **Vapi Assistant** (with the system prompt we defined) to that specific button.
+
+```html
+<script src="https://cdn.jsdelivr.net/gh/vapi-ai/web-sdk/dist/vapi.js"></script>
+<script>
+  const vapi = new Vapi('092bb55d-7f7f-4a78-91b0-49c8bdb8bbbd'); // Replace with your Public Key
+  const startBtn = document.getElementById('start-voice-btn');
+  const status = document.getElementById('chat-status');
+
+  startBtn.addEventListener('click', () => {
+    vapi.start('eb30ac28-ab3d-41cf-80a2-de8159692650'); // Replace with your Assistant ID
+  });
+
+  vapi.on('call-start', () => {
+    status.innerText = "● Live Consultation in Progress...";
+    startBtn.innerText = "🛑 End Call";
+  });
+
+  vapi.on('call-end', () => {
+    status.innerText = "● Standby for Voice Interaction";
+    startBtn.innerText = "🎙️ Start Voice Consultation";
+  });
+</script>
+```
+
+---
+
+### Why this is the "Ultimate" Intake Widget:
+1.  **Professional Presence:** It doesn't look like a "chat bot." It looks like an enterprise-grade "Voice Consultation" terminal, which fits your brand as a software agency.
+2.  **Non-Blocking:** By keeping it in a dedicated Code Block, it won't break your Squarespace template or interfere with your site navigation.
+3.  **The "Cline" Identity:** By titling it **"Intake Specialist"** and styling it in dark-mode/futuristic tones, you are signaling to high-end leads that they are engaging with a specialized AI agent, not a generic contact form.
+
+### Pro-Tip for your Leads:
+When the client uploads a document (the file input), your Vapi backend (using your Webhook URL) will receive that file path or content. Because you’ve set the **System Prompt** correctly, the AI will naturally say: 
+> *"I see you've uploaded your project brief. Let me analyze that while we continue..."*
+
+**This makes the client feel like they are working with a human-level expert rather than a script.** 
+
+Does that setup look good for your site, or would you like me to tweak the CSS to match your specific brand colors?

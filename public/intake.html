@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Passaggio — Client Intake Portal</title>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       Brand: Passaggio (design.md tokens)
+       Fonts: Oswald (display/headings) + Lato (body) via Google Fonts CDN
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+
+  <!-- Google reCAPTCHA v3 — only loaded on non-localhost domains -->
+  <script>
+    (function () {
+      const isLocalhost = /^(localhost|127\.0\.0\.1)(:\d+)?$/.test(location.hostname);
+      window.__PASSAGGIO_IS_LOCALHOST__ = isLocalhost;
+      if (!isLocalhost) {
+        const s = document.createElement('script');
+        s.src = 'https://www.google.com/recaptcha/api.js?render=6Le51iAtAAAAAFSLIu97ZNbIO76JodHPmzMUj32f';
+        s.async = true;
+        s.defer = true;
+        document.head.appendChild(s);
+      }
+    })();
+  </script>
+
+  <style>
+    /* ── Brand Inversion: design.md → CSS Custom Properties ─────────────── */
+    :root {
+      --bg:            #FFFFFF;
+      --panel-bg:      #FFFFFF;
+      --panel-border:  #E5E7EB;
+      --accent:        #D81B60;
+      --accent-light:  #FCE4EC;
+      --text:          #111111;
+      --text-muted:    #6B7280;
+      --danger:        #ef4444;
+      --success:       #10b981;
+      --input-bg:      #F9FAFB;
+      --input-border:  #E5E7EB;
+      --focus-ring:    #D81B60;
+      --font-display:  'Oswald', 'din-condensed-web', sans-serif;
+      --font-body:     'Lato', 'proxima-nova', sans-serif;
+      --radius:        0.75rem;
+      --shadow-panel:  0 10px 40px rgba(0, 0, 0, 0.55);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem 1rem 7rem;
+    }
+
+    /* ── Portal Card ──────────────────────────────────────────────────────── */
+    .portal {
+      background: var(--panel-bg);
+      border: 1px solid var(--panel-border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-panel);
+      width: 100%;
+      max-width: 540px;
+      padding: 2.5rem 2rem;
+      margin: 1rem 0;
+      text-align: center;
+    }
+
+    @media (max-width: 480px) {
+      .portal { padding: 2rem 1.25rem; }
+      .logo-img { width: 80px; height: 80px; }
+    }
+
+    /* ── Logo + Branding ──────────────────────────────────────────────────── */
+    .brand-row {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .logo-img {
+      width: 96px;
+      height: 96px;
+      object-fit: contain;
+      margin-bottom: 0.25rem;
+    }
+    .logo-text {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+    .sub {
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      max-width: 380px;
+      margin: 0 auto;
+    }
+
+    /* ── Scarcity Banner ──────────────────────────────────────────────────── */
+    .scarcity-banner {
+      background: linear-gradient(135deg, var(--accent-light), #fff0f5);
+      border: 1px solid rgba(216, 27, 96, 0.25);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      margin: 1.25rem 0 0.75rem;
+      text-align: center;
+    }
+    .scarcity-banner.full {
+      background: #F3F4F6;
+      border-color: var(--panel-border);
+    }
+    .scarcity-banner .spots {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .scarcity-banner.full .spots {
+      color: var(--text-muted);
+    }
+    .scarcity-banner .tier-copy {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      color: var(--text);
+      margin-top: 0.35rem;
+      line-height: 1.45;
+    }
+
+    /* ── Boutique Status Banner ───────────────────────────────────────────── */
+    .boutique-status {
+      background: linear-gradient(135deg, var(--accent-light), #fff0f5);
+      border: 1px solid rgba(216, 27, 96, 0.25);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      margin: 1.25rem 0 0.75rem;
+      text-align: center;
+    }
+    .boutique-status.full {
+      background: #F3F4F6;
+      border-color: var(--panel-border);
+    }
+    .boutique-status .status-title {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .boutique-status.full .status-title {
+      color: var(--text-muted);
+    }
+    .boutique-status .status-copy {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      color: var(--text);
+      margin-top: 0.35rem;
+      line-height: 1.45;
+    }
+
+
+    /* ── Pay CTA ──────────────────────────────────────────────────────────── */
+    .pay-cta {
+      margin: 1rem 0 0.5rem;
+    }
+    .pay-cta .price-tag {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.35rem;
+    }
+    .pay-cta .price-tag span {
+      color: var(--accent);
+    }
+    .pay-cta .price-sub {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 0.9rem;
+    }
+
+    /* ── Divider ──────────────────────────────────────────────────────────── */
+    .or {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 1.75rem 0;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-family: var(--font-body);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .or::before, .or::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--panel-border);
+    }
+
+    /* ── Form ─────────────────────────────────────────────────────────────── */
+    form {
+      text-align: left;
+    }
+    label {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 0.75rem 0.9rem;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      margin-bottom: 1.1rem;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--focus-ring);
+      box-shadow: 0 0 0 3px rgba(216, 27, 96, 0.12);
+    }
+    textarea {
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    /* ── File Row ─────────────────────────────────────────────────────────── */
+    .file-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+    .file-row input[type="file"] {
+      flex: 1;
+      padding: 0.45rem;
+      font-size: 0.85rem;
+      margin-bottom: 0;
+    }
+    .file-row button {
+      background: transparent;
+      border: 1px solid var(--danger);
+      color: var(--danger);
+      padding: 0.4rem 0.7rem;
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-family: var(--font-body);
+      transition: background 0.15s;
+    }
+    .file-row button:hover {
+      background: rgba(239, 68, 68, 0.08);
+    }
+
+    /* ── Legal Checkbox ───────────────────────────────────────────────────── */
+    .legal-group {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin: 1rem 0 1.25rem;
+      padding: 1rem;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: var(--radius);
+      text-align: left;
+    }
+    .legal-group input[type="checkbox"] {
+      appearance: none;
+      width: 22px;
+      height: 22px;
+      min-width: 22px;
+      border: 2px solid var(--accent);
+      border-radius: 0.35rem;
+      margin: 0;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .legal-group input[type="checkbox"]:checked {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    .legal-group input[type="checkbox"]:checked::after {
+      content: '✓';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+    .legal-group input[type="checkbox"]:focus {
+      box-shadow: 0 0 0 3px rgba(216, 27, 96, 0.18);
+      outline: none;
+    }
+    .legal-group label {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 400;
+      text-transform: none;
+      letter-spacing: 0;
+      margin: 0;
+      line-height: 1.5;
+      color: var(--text);
+      cursor: pointer;
+    }
+    .legal-group a {
+      color: var(--accent);
+      text-decoration: underline;
+      font-weight: 700;
+    }
+    .legal-group a:hover {
+      text-decoration: none;
+    }
+
+    /* ── Voice Intake Widget ──────────────────────────────────────────────── */
+    .voice-intake {
+      margin: 1.5rem 0 1rem;
+      padding: 1.25rem;
+      background: var(--input-bg);
+      border: 1px solid var(--panel-border);
+      border-radius: var(--radius);
+      text-align: center;
+    }
+    .voice-intake .voice-title {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.35rem;
+    }
+    .voice-intake .voice-sub {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      line-height: 1.45;
+    }
+    .voice-intake .vapi-container {
+      display: block;
+      width: 100%;
+      min-height: 120px;
+      clear: both;
+    }
+
+    /* Strict boundary wrapper so the Vapi SDK button cannot escape the card */
+    #vapi-widget-container {
+      position: relative !important;
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      width: 100% !important;
+      min-height: 120px;
+      clear: both;
+      background: transparent;
+      overflow: hidden !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    /* Force Vapi's injected container to behave like a normal inline block element */
+    iframe[src*="vapi"],
+    .vapi-btn-container,
+    [class*="vapi-"] {
+      position: static !important;   /* Strips the global floating behavior */
+      position: relative !important; /* Re-anchors it natively inside our wrapper */
+      display: block !important;
+      margin: 10px auto !important;
+      transform: none !important;
+      inset: auto !important;
+      box-shadow: none !important;
+      top: auto !important;
+      right: auto !important;
+      bottom: auto !important;
+      left: auto !important;
+      float: none !important;
+    }
+
+    /* ── Buttons ─────────────────────────────────────────────────────────── */
+    .btn {
+      width: 100%;
+      padding: 0.85rem;
+      border: none;
+      border-radius: var(--radius);
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 1rem;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s, box-shadow 0.2s, background 0.2s;
+      margin-top: 0.5rem;
+    }
+    .btn:hover { opacity: 0.92; }
+    .btn:active { transform: translateY(1px); }
+    .btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-accent {
+      background: var(--accent);
+      color: #FFFFFF;
+      box-shadow: 0 2px 8px rgba(216, 27, 96, 0.25);
+    }
+    .btn-accent:hover:not(:disabled) {
+      box-shadow: 0 4px 16px rgba(216, 27, 96, 0.35);
+    }
+    .btn-muted {
+      background: #F3F4F6;
+      color: var(--text);
+      border: 1px solid var(--panel-border);
+      margin-top: 0.5rem;
+    }
+    .btn-muted:hover:not(:disabled) {
+      background: #E5E7EB;
+    }
+
+    /* ── Status ───────────────────────────────────────────────────────────── */
+    #status {
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      min-height: 1.5em;
+      font-family: var(--font-body);
+    }
+    .success { color: var(--success); }
+    .error   { color: var(--danger); }
+
+    /* ── Footer ─────────────────────────────────────────────────────────────── */
+    .footer-tag {
+      margin-top: 2rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-family: var(--font-body);
+      letter-spacing: 0.02em;
+    }
+
+    /* ── Vapi Widget Overrides (embedded, inline) ─────────────────────────── */
+    .vapi-btn,
+    #vapi-widget-container button,
+    #vapi-widget-container .vapi-btn {
+      --vapi-button-color: var(--accent) !important;
+      --vapi-button-bg: var(--panel-bg) !important;
+      background: var(--accent) !important;
+      color: #FFFFFF !important;
+      border: none !important;
+      border-radius: 50% !important;
+      width: 72px !important;
+      height: 72px !important;
+      box-shadow: 0 4px 16px rgba(216, 27, 96, 0.35) !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      cursor: pointer !important;
+    }
+
+    #vapi-widget-container img,
+    #vapi-widget-container svg {
+      max-width: 100%;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="portal">
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         Brand Header
+         ═══════════════════════════════════════════════════════════════════════ -->
+    <div class="brand-row">
+      <img src="media/logo.png" alt="Passaggio" class="logo-img" />
+      <div class="logo-text">Passaggio Intake</div>
+    
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         Boutique Capacity Status Banner
+         ═══════════════════════════════════════════════════════════════════════ -->
+    <div id="boutiqueStatus" class="boutique-status" style="display:none;">
+      <div id="statusTitle" class="status-title">Current Status: One-on-One Boutique Service</div>
+      <div id="statusCopy" class="status-copy">I only onboard one new client per 24-hour cycle to ensure artisanal quality and zero-bug performance.</div>
+    </div>
+</div>
+
+    <!--
+    ═══════════════════════════════════════════════════════════════════════
+    TOGGLE OFF: Founding 5 / Scale Tier scarcity banner + pay CTA + OR dividers
+    Uncomment this block to re-enable the monetized intake funnel.
+    ═══════════════════════════════════════════════════════════════════════
+    <div id="scarcityBanner" class="scarcity-banner" style="display:none;">
+      <div id="spotsText" class="spots">Loading spots…</div>
+      <div id="tierCopy" class="tier-copy">Checking availability…</div>
+    </div>
+
+    <div class="pay-cta">
+      <div id="priceTag" class="price-tag">Secure your spot — <span>$50</span></div>
+      <div id="priceSub" class="price-sub">Locks in your founding balance.</div>
+      <button id="checkoutBtn" class="btn btn-accent" type="button" disabled>
+        Lock In My Spot
+      </button>
+    </div>
+
+    <div class="or">OR</div>
+    -->
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         Text / File Fallback Form → POST /api/intake (serverless)
+         ═══════════════════════════════════════════════════════════════════════ -->
+    <form id="intakeForm">
+      <label for="client_name">Your Name</label>
+      <input type="text" id="client_name" name="client_name" placeholder="Ada Lovelace" required>
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" placeholder="ada@example.com" required>
+
+      <div class="voice-intake">
+        <div class="voice-title">🎙️ Passaggio Assistant— AI Beta Voice Intake</div>
+        <div class="voice-sub">Tap the button below to start a voice conversation with our intake specialist.</div>
+        <div id="vapi-widget-container" class="vapi-container"></div>
+      </div>
+
+      <label for="transcript_text">Anything else you'd like to say or share here instead of using the beta widget?</label>
+      <textarea id="transcript_text" name="transcript_text" placeholder="My biggest pain point is…"></textarea>
+
+      <div id="fileList">
+        <div class="file-row" data-index="0">
+          <input type="file" name="uploads" accept=".md,.txt,.pdf,.docx,.json,.csv">
+          <button type="button" onclick="removeFileRow(this)">✕</button>
+        </div>
+      </div>
+      <button type="button" class="btn btn-muted" onclick="addFileRow()">+ Add Another File</button>
+
+      <!-- Legal Checkbox -->
+      <div class="legal-group">
+        <input type="checkbox" id="legalAgree" name="legal_agree" required>
+        <label for="legalAgree">
+          I agree to the
+          <a href="https://app.termly.io/policy-viewer/policy.html?policyUUID=463c91c1-2c5a-4b07-b519-d07026757e8f" target="_blank" rel="noopener">Terms & Conditions</a>
+          and
+          <a href="https://app.termly.io/policy-viewer/policy.html?policyUUID=6ef0937a-9ef3-4814-9a4b-45c5640d13a4" target="_blank" rel="noopener">Privacy Policy</a>.
+          I understand my information will be used to evaluate my intake.
+        </label>
+      </div>
+
+      <button type="submit" class="btn btn-accent" id="submitBtn" disabled>Submit Intake</button>
+      <div id="status"></div>
+    </form>
+
+    <div class="footer-tag">Sovereign software, built at speed. &copy; Passaggio</div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       Vapi SDK — loaded at the bottom so the inline container is already in the DOM
+       before the script initializes. The explicit run() call below mounts the
+       widget inside #vapi-widget-container, inside the voice-intake card.
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <script src="https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js"></script>
+
+  <script>
+    // ═════════════════════════════════════════════════════════════════════════
+    // Client Intake — Form Logic
+    // ═════════════════════════════════════════════════════════════════════════
+    // Routes to: POST /api/intake (serverless function in api/intake.js)
+    // No secrets in this file — all env vars live server-side.
+    // ═════════════════════════════════════════════════════════════════════════
+
+    // ── Capacity / Waitlist State ─────────────────────────────────────────────
+    let isWaitlistMode = false;
+
+    async function loadCapacity() {
+      const banner = document.getElementById('boutiqueStatus');
+      const title = document.getElementById('statusTitle');
+      const copy = document.getElementById('statusCopy');
+
+      try {
+        const resp = await fetch('/api/intake?status=capacity');
+        if (!resp.ok) throw new Error('Capacity fetch failed');
+        const data = await resp.json();
+        isWaitlistMode = data.is_at_capacity;
+      } catch (err) {
+        console.error('Capacity load error:', err);
+        // Fail-safe: assume full so we don't oversell.
+        isWaitlistMode = true;
+      }
+
+      banner.style.display = 'block';
+      if (isWaitlistMode) {
+        banner.classList.add('full');
+        title.textContent = 'Current Status: Waitlist';
+        copy.textContent = 'I only onboard one new client per 24-hour cycle to ensure artisanal quality and zero-bug performance. Join the waitlist and we will contact you when a spot opens.';
+        setProjectFieldsEnabled(false);
+        submitBtn.textContent = 'Join the Waitlist';
+      } else {
+        banner.classList.remove('full');
+        title.textContent = 'Current Status: One-on-One Boutique Service';
+        copy.textContent = 'I only onboard one new client per 24-hour cycle to ensure artisanal quality and zero-bug performance.';
+        setProjectFieldsEnabled(true);
+        submitBtn.textContent = 'Submit Intake';
+      }
+    }
+
+    function setProjectFieldsEnabled(enabled) {
+      const projectFields = [
+        document.getElementById('transcript_text'),
+        document.getElementById('legalAgree'),
+      ];
+      const fileInputs = document.querySelectorAll('#fileList input[type="file"]');
+      const addFileBtn = document.querySelector('button[onclick="addFileRow()"]');
+      const voiceWidget = document.querySelector('.voice-intake');
+
+      projectFields.forEach((el) => { if (el) el.disabled = !enabled; });
+      fileInputs.forEach((el) => { el.disabled = !enabled; });
+      if (addFileBtn) addFileBtn.disabled = !enabled;
+      if (voiceWidget) voiceWidget.style.display = enabled ? 'block' : 'none';
+    }
+
+    // ── Scarcity / Checkout State ─────────────────────────────────────────────
+    let funnelState = { spots_remaining: 0, tier: 'founder', is_full: false };
+
+    async function loadScarcity() {
+      const banner = document.getElementById('scarcityBanner');
+      if (!banner) return; // funnel section is toggled off
+
+      const spotsText = document.getElementById('spotsText');
+      const tierCopy = document.getElementById('tierCopy');
+      const priceTag = document.getElementById('priceTag');
+      const priceSub = document.getElementById('priceSub');
+      const checkoutBtn = document.getElementById('checkoutBtn');
+
+      try {
+        const resp = await fetch('/api/intake');
+        if (!resp.ok) throw new Error('Scarcity fetch failed');
+        funnelState = await resp.json();
+      } catch (err) {
+        console.error('Scarcity load error:', err);
+        funnelState = { spots_remaining: 0, tier: 'standard', is_full: true };
+      }
+
+      banner.style.display = 'block';
+      checkoutBtn.disabled = false;
+
+      if (funnelState.is_full) {
+        banner.classList.add('full');
+        spotsText.textContent = 'The Founding 5 cohort is full';
+        tierCopy.textContent = 'You are being routed to the Scale Tier. Spots are limited.';
+        priceTag.innerHTML = 'Join the Scale Tier — <span>$50</span>';
+        priceSub.textContent = 'Start fee. Full Scale Tier balance due on approval.';
+        checkoutBtn.textContent = 'Join Scale Tier';
+      } else {
+        banner.classList.remove('full');
+        spotsText.textContent = `${funnelState.spots_remaining} of ${funnelState.founder_limit || 5} Founding spots left`;
+        tierCopy.textContent = 'Lock in your $450 Founding balance before the cohort fills.';
+        priceTag.innerHTML = 'Secure your founding spot — <span>$50</span>';
+        priceSub.textContent = '$50 application fee locks in your $450 Founding balance.';
+        checkoutBtn.textContent = 'Lock In Founding Spot';
+      }
+    }
+
+    async function startCheckout() {
+      const checkoutBtn = document.getElementById('checkoutBtn');
+      const statusEl = document.getElementById('status');
+      const email = document.getElementById('email').value.trim();
+      const clientName = document.getElementById('client_name').value.trim();
+
+      checkoutBtn.disabled = true;
+      statusEl.textContent = 'Redirecting to secure checkout…';
+      statusEl.className = '';
+
+      try {
+        const resp = await fetch('/api/intake?action=checkout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: email || undefined,
+            client_name: clientName || undefined,
+          }),
+        });
+        const data = await resp.json();
+        if (resp.ok && data.checkout_url) {
+          window.location.href = data.checkout_url;
+        } else {
+          throw new Error(data.error || 'Checkout creation failed.');
+        }
+      } catch (err) {
+        statusEl.textContent = '✗ ' + err.message;
+        statusEl.className = 'error';
+        checkoutBtn.disabled = false;
+      }
+    }
+
+    const checkoutBtn = document.getElementById('checkoutBtn');
+    if (checkoutBtn) checkoutBtn.addEventListener('click', startCheckout);
+
+    // ── File Row Helpers ──────────────────────────────────────────────────────
+    const fileList = document.getElementById('fileList');
+
+    function addFileRow() {
+      const div = document.createElement('div');
+      div.className = 'file-row';
+      div.innerHTML = `
+        <input type="file" name="uploads" accept=".md,.txt,.pdf,.docx,.json,.csv">
+        <button type="button" onclick="removeFileRow(this)">✕</button>
+      `;
+      fileList.appendChild(div);
+    }
+
+    function removeFileRow(btn) {
+      if (fileList.children.length > 1) btn.parentElement.remove();
+    }
+
+    // ── Form Submission ───────────────────────────────────────────────────────
+    const form = document.getElementById('intakeForm');
+    const statusEl = document.getElementById('status');
+    const submitBtn = document.getElementById('submitBtn');
+    const legalAgree = document.getElementById('legalAgree');
+
+    function updateSubmitState() {
+      submitBtn.disabled = !legalAgree.checked;
+    }
+
+    legalAgree.addEventListener('change', updateSubmitState);
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      statusEl.textContent = 'Submitting…';
+      statusEl.className = '';
+
+      if (!isWaitlistMode && !legalAgree.checked) {
+        statusEl.textContent = '✗ You must agree to the Terms & Conditions and Privacy Policy.';
+        statusEl.className = 'error';
+        return;
+      }
+
+      // Waitlist mode: only name + email.
+      if (isWaitlistMode) {
+        const payload = {
+          client_name: document.getElementById('client_name').value.trim(),
+          email: document.getElementById('email').value.trim(),
+        };
+
+        try {
+          const resp = await fetch('/api/intake?action=waitlist', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          });
+          const data = await resp.json();
+
+          if (resp.ok) {
+            statusEl.textContent = '✓ You are on the waitlist — we will contact you when a spot opens.';
+            statusEl.className = 'success';
+            form.reset();
+          } else {
+            statusEl.textContent = `✗ ${data.error || 'Something went wrong.'}`;
+            statusEl.className = 'error';
+          }
+        } catch (err) {
+          statusEl.textContent = '✗ Unable to reach intake server. Please try again.';
+          statusEl.className = 'error';
+          console.error('Waitlist submission error:', err);
+        }
+        return;
+      }
+
+      let recaptchaToken;
+      if (window.__PASSAGGIO_IS_LOCALHOST__) {
+        // Bypass reCAPTCHA on localhost to avoid "Invalid domain for site key" errors.
+        recaptchaToken = 'localhost-bypass';
+        console.log('Localhost detected: skipping reCAPTCHA execution.');
+      } else {
+        try {
+          recaptchaToken = await grecaptcha.execute('6Le51iAtAAAAAFSLIu97ZNbIO76JodHPmzMUj32f', { action: 'intake' });
+        } catch (err) {
+          statusEl.textContent = '✗ reCAPTCHA check failed. Please try again.';
+          statusEl.className = 'error';
+          console.error('reCAPTCHA execute error:', err);
+          return;
+        }
+
+        if (!recaptchaToken) {
+          statusEl.textContent = '✗ reCAPTCHA check failed. Please try again.';
+          statusEl.className = 'error';
+          return;
+        }
+      }
+
+      // Upload files via Vercel Blob presigned URLs and gather metadata
+      const fileMetadata = [];
+      const inputs = fileList.querySelectorAll('input[type="file"]');
+      for (const inp of inputs) {
+        if (!inp.files.length) continue;
+        const f = inp.files[0];
+
+        try {
+          const metaRes = await fetch(`/api/upload-url?filename=${encodeURIComponent(f.name)}&contentType=${encodeURIComponent(f.type || 'application/octet-stream')}`);
+          const meta = await metaRes.json();
+          if (!metaRes.ok || !meta.presigned_url) throw new Error(meta.error || 'Upload URL unavailable');
+
+          const uploadRes = await fetch(meta.presigned_url, {
+            method: 'PUT',
+            body: f,
+            headers: { 'Content-Type': f.type || 'application/octet-stream' },
+          });
+          if (!uploadRes.ok) throw new Error(`Upload failed: ${uploadRes.status}`);
+
+          // The public blob URL is the presigned URL with query params stripped.
+          const publicUrl = meta.presigned_url.split('?')[0];
+
+          fileMetadata.push({
+            filename: f.name,
+            content_type: f.type || 'application/octet-stream',
+            size_bytes: f.size,
+            url: publicUrl,
+            pathname: meta.pathname,
+          });
+        } catch (err) {
+          console.error('File upload error:', err);
+          statusEl.textContent = `✗ Failed to upload ${f.name}. Please try again.`;
+          statusEl.className = 'error';
+          return;
+        }
+      }
+
+      const payload = {
+        client_name: document.getElementById('client_name').value.trim(),
+        email:       document.getElementById('email').value.trim(),
+        transcript_text: document.getElementById('transcript_text').value.trim(),
+        file_metadata: fileMetadata.length ? fileMetadata : undefined,
+        recaptcha_token: recaptchaToken,
+      };
+
+      try {
+        const resp = await fetch('/api/intake?action=intake', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+
+        const data = await resp.json();
+
+        if (resp.ok) {
+          statusEl.textContent = '✓ Intake received — we\'ll review and respond within 24 hours.';
+          statusEl.className = 'success';
+          form.reset();
+          updateSubmitState();
+          // Reset file list to single row
+          while (fileList.children.length > 1) {
+            fileList.lastElementChild.remove();
+          }
+          fileList.querySelector('input[type="file"]').value = '';
+        } else {
+          statusEl.textContent = `✗ ${data.error || 'Something went wrong.'}`;
+          statusEl.className = 'error';
+        }
+      } catch (err) {
+        statusEl.textContent = '✗ Unable to reach intake server. Please try again or use the voice option above.';
+        statusEl.className = 'error';
+        console.error('Intake submission error:', err);
+      }
+    });
+
+    // ── Initialize Vapi Widget ──────────────────────────────────────────────
+    // Public key must stay in sync with Blueprints/.env (VAPI_PUBLIC_API_KEY).
+    document.addEventListener('DOMContentLoaded', function () {
+      const vapiPublicKey = "092bb55d-7f7f-4a78-91b0-49c8bdb8bbbd";
+      const assistantId   = "5831729f-3982-4993-89d1-563225881ca0";
+      const container     = document.getElementById("vapi-widget-container");
+
+      if (!container) {
+        console.error("Vapi widget container #vapi-widget-container not found.");
+        return;
+      }
+
+      if (typeof vapi === "undefined" || typeof vapi.renderButton !== "function") {
+        console.error("Vapi SDK not loaded or vapi.renderButton() is unavailable.");
+        return;
+      }
+
+      // Render the Vapi microphone button pinned inside the explicit DOM
+      // container. Using a regular (non-inline) button type with relative
+      // positioning keeps the widget in document flow so it cannot collapse
+      // or float outside the card.
+      vapi.renderButton({
+        apiKey: vapiPublicKey,
+        assistant: assistantId,
+        container: container,
+        type: 'inline',
+        style: {
+          position: 'relative',
+          width: '72px',
+          height: '72px',
+          top: 'auto',
+          left: 'auto',
+          right: 'auto',
+          bottom: 'auto',
+          transform: 'none',
+          margin: '0 auto'
+        }
+      });
+    });
+
+    // ── Initialize ──────────────────────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', () => {
+      loadScarcity();
+      loadCapacity();
+    });
+  </script>
+</body>
+</html>

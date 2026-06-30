@@ -1,0 +1,56 @@
+{
+  "version": 2,
+  "github": {
+    "enabled": false
+  },
+  "routes": [
+    {
+      "src": "/api/upload-url",
+      "dest": "/api/intake.js"
+    },
+    {
+      "src": "/api/intake",
+      "dest": "/api/intake.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/api/intake",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type, Authorization, x-vapi-secret"
+        }
+      ]
+    },
+    {
+      "source": "/api/upload-url",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type"
+        }
+      ]
+    }
+  ]
+}

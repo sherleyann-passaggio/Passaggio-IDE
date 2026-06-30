@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Passaggio — Client Intake Portal</title>
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2096%2096%22%20fill%3D%22none%22%3E%3Ccircle%20cx%3D%2248%22%20cy%3D%2248%22%20r%3D%2244%22%20stroke%3D%22%23D81B60%22%20stroke-width%3D%225%22%2F%3E%3Ccircle%20cx%3D%2248%22%20cy%3D%2248%22%20r%3D%2228%22%20stroke%3D%22%23D81B60%22%20stroke-width%3D%224%22%20stroke-dasharray%3D%226%206%22%2F%3E%3Cpath%20d%3D%22M48%2020v12M48%2064v12M20%2048h12M64%2048h12%22%20stroke%3D%22%23D81B60%22%20stroke-width%3D%225%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2248%22%20cy%3D%2248%22%20r%3D%229%22%20fill%3D%22%23D81B60%22%2F%3E%3C%2Fsvg%3E" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+
+  <!-- Google reCAPTCHA v3 -->
+  <script src="https://www.google.com/recaptcha/api.js?render=6Le51iAtAAAAAFSLIu97ZNbIO76JodHPmzMUj32f"></script>
+
+  <style>
+    :root {
+      --bg:            #FFFFFF;
+      --panel-bg:      #FFFFFF;
+      --panel-border:  #E5E7EB;
+      --accent:        #D81B60;
+      --accent-light:  #FCE4EC;
+      --text:          #111111;
+      --text-muted:    #6B7280;
+      --danger:        #ef4444;
+      --success:       #10b981;
+      --input-bg:      #F9FAFB;
+      --input-border:  #E5E7EB;
+      --focus-ring:    #D81B60;
+      --font-display:  'Oswald', 'din-condensed-web', sans-serif;
+      --font-body:     'Lato', 'proxima-nova', sans-serif;
+      --radius:        0.75rem;
+      --shadow-panel:  0 10px 40px rgba(0, 0, 0, 0.55);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem 1rem 4rem;
+    }
+
+    .portal {
+      background: var(--panel-bg);
+      border: 1px solid var(--panel-border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-panel);
+      width: 100%;
+      max-width: 540px;
+      padding: 2.5rem 2rem;
+      margin: 1rem 0;
+      text-align: center;
+    }
+
+    @media (max-width: 480px) {
+      .portal { padding: 2rem 1.25rem; }
+    }
+
+    .brand-row {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .brand-logo {
+      width: 96px;
+      height: 96px;
+      color: var(--accent);
+    }
+    .logo-text {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+    .sub {
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      max-width: 380px;
+      margin: 0 auto 1.5rem;
+    }
+
+    /* Fallback form */
+    form { text-align: left; }
+    label {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 0.75rem 0.9rem;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      margin-bottom: 1.1rem;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--focus-ring);
+      box-shadow: 0 0 0 3px rgba(216, 27, 96, 0.12);
+    }
+    textarea {
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    /* File upload zone */
+    .file-zone {
+      margin-bottom: 1.1rem;
+      padding: 1rem;
+      background: var(--input-bg);
+      border: 1px dashed var(--input-border);
+      border-radius: var(--radius);
+      text-align: left;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    .file-zone:hover {
+      border-color: var(--accent);
+      background: #fff;
+    }
+    .file-zone-label {
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text);
+      margin-bottom: 0.75rem;
+    }
+    .file-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.6rem;
+    }
+    .file-row:last-child { margin-bottom: 0; }
+    .file-input {
+      display: none;
+    }
+    .file-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.55rem 0.9rem;
+      background: #fff;
+      border: 1px solid var(--input-border);
+      border-radius: var(--radius);
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--accent);
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+      white-space: nowrap;
+    }
+    .file-btn:hover {
+      background: var(--accent-light);
+      border-color: var(--accent);
+    }
+    .file-name {
+      flex: 1;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .file-status {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+    .file-status.ready { color: var(--text-muted); }
+    .file-status.uploading { color: var(--accent); }
+    .file-status.done { color: var(--success); }
+    .file-status.error { color: var(--danger); }
+    .add-file-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      margin-top: 0.5rem;
+      padding: 0.45rem 0.75rem;
+      background: transparent;
+      border: 1px solid var(--input-border);
+      border-radius: var(--radius);
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
+    }
+    .add-file-btn:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: var(--accent-light);
+    }
+
+    .legal-group {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin: 1rem 0 1.25rem;
+      padding: 1rem;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: var(--radius);
+      text-align: left;
+    }
+    .legal-group input[type="checkbox"] {
+      appearance: none;
+      width: 22px;
+      height: 22px;
+      min-width: 22px;
+      border: 2px solid var(--accent);
+      border-radius: 0.35rem;
+      margin: 0;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .legal-group input[type="checkbox"]:checked {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+    .legal-group input[type="checkbox"]:checked::after {
+      content: '✓';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+    .legal-group label {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 400;
+      text-transform: none;
+      letter-spacing: 0;
+      margin: 0;
+      line-height: 1.5;
+      color: var(--text);
+      cursor: pointer;
+    }
+    .legal-group a {
+      color: var(--accent);
+      text-decoration: underline;
+      font-weight: 700;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 0.85rem;
+      border: none;
+      border-radius: var(--radius);
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 1rem;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s, box-shadow 0.2s, background 0.2s;
+      margin-top: 0.5rem;
+    }
+    .btn:hover { opacity: 0.92; }
+    .btn:active { transform: translateY(1px); }
+    .btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .btn-accent {
+      background: var(--accent);
+      color: #FFFFFF;
+      box-shadow: 0 2px 8px rgba(216, 27, 96, 0.25);
+    }
+
+    #status {
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      min-height: 1.5em;
+      font-family: var(--font-body);
+    }
+    .success { color: var(--success); }
+    .error   { color: var(--danger); }
+
+    .footer-tag {
+      margin-top: 2rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-family: var(--font-body);
+      letter-spacing: 0.02em;
+    }
+
+    /* Capacity status banner */
+    .capacity-banner {
+      margin-top: 1.5rem;
+      padding: 0.75rem 1rem;
+      background: var(--accent-light);
+      border: 1px solid var(--accent);
+      border-radius: var(--radius);
+      text-align: center;
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    /* Accordion */
+    .accordion {
+      margin-top: 1rem;
+      text-align: left;
+      border: 1px solid var(--panel-border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+    .accordion-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.85rem 1rem;
+      background: var(--input-bg);
+      cursor: pointer;
+      transition: background 0.2s;
+      user-select: none;
+    }
+    .accordion-header:hover {
+      background: #f0f1f3;
+    }
+    .accordion-title {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+    .accordion-chevron {
+      font-size: 1rem;
+      color: var(--text-muted);
+      transition: transform 0.3s ease;
+      transform: rotate(0deg);
+      display: inline-block;
+    }
+    .accordion.open .accordion-chevron {
+      transform: rotate(180deg);
+    }
+    .accordion-body {
+      overflow: hidden;
+      transition: max-height 0.35s ease, padding 0.35s ease;
+      padding: 0 1rem;
+      background: var(--panel-bg);
+    }
+    .accordion.open .accordion-body {
+      max-height: 900px;
+      padding: 1rem;
+    }
+    .accordion-body ul {
+      margin: 0;
+      padding-left: 1.25rem;
+      list-style: disc;
+    }
+    .accordion-body li {
+      margin-bottom: 0.55rem;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: var(--text);
+    }
+    .accordion-body a {
+      color: var(--accent);
+      text-decoration: underline;
+      font-weight: 700;
+    }
+    .accordion-body p {
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin-bottom: 0.75rem;
+    }
+    .accordion-body p:last-child {
+      margin-bottom: 1.5rem;
+    }
+
+    /* Compare grid */
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin: 1rem 0;
+    }
+    .compare-col {
+      padding: 0.75rem;
+      border-radius: var(--radius);
+      text-align: center;
+    }
+    .compare-col.bad {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+    }
+    .compare-col.good {
+      background: var(--accent-light);
+      border: 1px solid var(--accent);
+    }
+    .compare-col h4 {
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+    }
+    .compare-col.bad h4 { color: #dc2626; }
+    .compare-col.good h4 { color: var(--accent); }
+    .compare-col ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      text-align: left;
+    }
+    .compare-col li {
+      font-size: 0.85rem;
+      margin-bottom: 0.4rem;
+      line-height: 1.4;
+    }
+
+    /* Thank You card */
+    .thank-you-card {
+      display: none;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.45s ease, transform 0.45s ease;
+      text-align: center;
+      padding: 1rem 0;
+    }
+    .thank-you-card.visible {
+      display: block;
+    }
+    .thank-you-card.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .thank-you-card .check-circle {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 1.25rem;
+      background: var(--accent-light);
+      border: 2px solid var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .thank-you-card .check-circle svg {
+      width: 32px;
+      height: 32px;
+      color: var(--accent);
+    }
+    .thank-you-card h2 {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+    .thank-you-card p {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      max-width: 400px;
+      margin: 0 auto 1.5rem;
+    }
+    .thank-you-card .deposit-context {
+      background: var(--input-bg);
+      border: 1px solid var(--panel-border);
+      border-radius: var(--radius);
+      padding: 1rem;
+      margin-bottom: 1.25rem;
+      text-align: left;
+    }
+    .thank-you-card .deposit-context h3 {
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+    .thank-you-card .deposit-context p {
+      font-size: 0.85rem;
+      margin: 0 0 0.4rem;
+      color: var(--text-muted);
+    }
+    .thank-you-card .deposit-context p:last-child {
+      margin-bottom: 0;
+    }
+    .thank-you-card .deposit-context strong {
+      color: var(--accent);
+    }
+    .form-wrapper {
+      transition: opacity 0.35s ease, max-height 0.35s ease, margin 0.35s ease, padding 0.35s ease;
+      overflow: hidden;
+    }
+    .form-wrapper.hidden {
+      opacity: 0;
+      max-height: 0;
+      margin-top: 0;
+      margin-bottom: 0;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="portal">
+
+    <div class="brand-row">
+      <svg class="brand-logo" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="48" cy="48" r="44" stroke="currentColor" stroke-width="5"/>
+        <circle cx="48" cy="48" r="28" stroke="currentColor" stroke-width="4" stroke-dasharray="6 6"/>
+        <path d="M48 20v12M48 64v12M20 48h12M64 48h12" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
+        <circle cx="48" cy="48" r="9" fill="currentColor"/>
+      </svg>
+      <div class="logo-text">Passaggio Intake</div>
+    </div>
+
+    <p class="sub">Tap the button below to start a voice conversation with our intake specialist, or fill out the form as a fallback.</p>
+
+    <label for="client_name">Your Name *</label>
+    <input type="text" id="client_name" name="client_name" placeholder="Ada Lovelace" required>
+
+    <label for="email">Email *</label>
+    <input type="email" id="email" name="email" placeholder="ada@example.com" required>
+
+    <!-- Fallback text form -->
+    <form id="intakeForm">
+      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; margin: 15px 0 20px 0; padding: 0;">
+        <p style="text-align: center; font-weight: bold; margin: 0 0 5px 0; padding: 0; font-size: 1.1rem; color: #111;">
+          🎙️ TAP TO SPEAK WITH OUR AI INTAKE SPECIALIST
+        </p>
+
+        <!-- Invisible breathing room to give the floating widget a perfect home -->
+        <div style="width: 100%; height: 100px; display: block; margin: 0; padding: 0;"></div>
+
+        <div id="vapi-widget-container" style="width: 100%; display: flex; justify-content: center; align-items: center;"></div>
+      </div>
+
+      <label for="transcript_text">Anything else you'd like to share?</label>
+      <textarea id="transcript_text" name="transcript_text" placeholder="My biggest pain point is…"></textarea>
+
+      <div class="file-zone" id="fileZone">
+        <div class="file-zone-label">📁 Attach Files</div>
+        <div id="fileList"></div>
+        <button type="button" class="add-file-btn" id="addFileBtn">+ Add another file</button>
+      </div>
+
+      <div class="legal-group">
+        <input type="checkbox" id="legalAgree" name="legal_agree" required>
+        <label for="legalAgree">
+          I agree to the
+          <a href="https://app.termly.io/policy-viewer/policy.html?policyUUID=463c91c1-2c5a-4b07-b519-d07026757e8f" target="_blank" rel="noopener">Terms & Conditions</a>
+          and
+          <a href="https://app.termly.io/policy-viewer/policy.html?policyUUID=6ef0937a-9ef3-4814-9a4b-45c5640d13a4" target="_blank" rel="noopener">Privacy Policy</a>.
+          I understand my information will be used to evaluate my intake.
+        </label>
+      </div>
+
+      <button type="submit" class="btn btn-accent" id="submitBtn" disabled>Submit Intake</button>
+      <div id="status"></div>
+    </form>
+
+    <!-- Thank You card -->
+    <div class="thank-you-card" id="thankYouCard" aria-live="polite">
+      <div class="check-circle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+      </div>
+      <h2>Thank you!</h2>
+      <p>Your intake details have been securely logged. Our AI is analyzing your requirements to build SCRIPT a custom 1-Page Game Plan tailored to your project.</p>
+      <p>Because we work with only one client at a time and deliver in 24 hours, slots are limited. If you’re ready to move forward, secure your place now.</p>
+
+      <div class="deposit-context">
+        <h3>What the $50 covers</h3>
+        <p>• Reserves cloud space and locks in your <strong>Beta rate</strong> ($1200 CAD + 3% rev share for 6 months).</p>
+        <p>• Applied toward your project kickoff—<strong>not an extra fee</strong>.</p>
+        <p>• If we’re not the right fit, we’ll refund it within 48 hours.</p>
+      </div>
+
+      <a href="https://buy.stripe.com/test_placeholder" class="btn btn-accent" id="stripeDepositBtn" target="_blank" rel="noopener" style="text-decoration:none; display:inline-block;">
+        Pay $50 Start Deposit & Lock In Your Slot
+      </a>
+      <p style="margin-top:0.75rem; font-size:0.8rem; color:var(--text-muted);">You’ll be redirected to Stripe Checkout to complete payment securely.</p>
+    </div>
+
+    <div class="capacity-banner" id="capacityBanner">📢 CURRENT STATUS: OPEN FOR ONE CLIENT</div>
+    <p style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-body); text-align: center; padding: 0 1rem;">I only onboard one new client per 24-hour cycle to ensure artisanal quality and zero-bug performance.</p>
+
+    <!-- Section 1: What am I signing up for? -->
+    <div class="accordion" id="accordion1">
+      <div class="accordion-header" data-target="accordion1">
+        <span class="accordion-title">🚀 What am I signing up for?</span>
+        <span class="accordion-chevron">▼</span>
+      </div>
+      <div class="accordion-body" style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding 0.35s ease; padding: 0 1rem;">
+        <p>You're grabbing one of the first-ever spots in our Beta Plan. Think of it like this: instead of hiring a big agency that schedules endless meetings and takes 6 weeks to build something, you just tell us what you want (right in this form — a YouTube video, a doc, whatever), and we build it for you in 24 hours flat.</p>
+        <p>No meetings. No back-and-forth. Just your own private, custom-built automation system that lives on your computer, not some shared cloud. It's your software, built for you, delivered at speed.</p>
+        <div class="compare-grid">
+          <div class="compare-col bad">
+            <h4>🏭 Traditional Dev Shop</h4>
+            <ul>
+              <li>No upfront deposit, but a massive 3-month contract</li>
+              <li>Endless design meetings, scope creep, delays</li>
+              <li>Project delivers in 6 weeks (if you're lucky)</li>
+              <li>Built on brittle multi-tenant cloud subscriptions</li>
+            </ul>
+          </div>
+          <div class="compare-col good">
+            <h4>🎯 Your Passaggio Agency</h4>
+            <ul>
+              <li>✅ Upfront deposit locks in your build slot</li>
+              <li>✅ Zero meetings. Drop your requirements in the form</li>
+              <li>✅ Guaranteed delivery within 24 hours</li>
+              <li>✅ Built as your own private, sovereign local asset</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Why is a setup deposit required today? -->
+    <div class="accordion" id="accordion2">
+      <div class="accordion-header" data-target="accordion2">
+        <span class="accordion-title">💰 Why is a setup deposit required today?</span>
+        <span class="accordion-chevron">▼</span>
+      </div>
+      <div class="accordion-body" style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding 0.35s ease; padding: 0 1rem;">
+        <p>Great question! When you hit submit, we immediately start building a private workspace just for you — spinning up dedicated AI models, reserving secure cloud space, and locking in engineering time. This isn't a cookie-cutter subscription where you share servers with a hundred other people.</p>
+        <p>Your deposit covers that first burst of setup work so we can hit the ground running on Day 1. Think of it like putting down a deposit on a custom suit — except this suit is your own AI-powered automation engine.</p>
+      </div>
+    </div>
+
+    <!-- Section 3: What is the cost of the Beta Plan? -->
+    <div class="accordion" id="accordion3">
+      <div class="accordion-header" data-target="accordion3">
+        <span class="accordion-title">✅ What is the cost of the Beta Plan?</span>
+        <span class="accordion-chevron">▼</span>
+      </div>
+      <div class="accordion-body" style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding 0.35s ease; padding: 0 1rem;">
+        <p>Right now, you're getting in at our super-low Beta price — a flat rate that's way cheaper than what we'll charge once we launch publicly. And the best part? By joining today, you lock in this low price forever.</p>
+        <p>Even if our prices go up later (and they will), you're grandfathered in at the Beta rate for as long as you're an active client. Plus, this includes our Care Plan — automatic security updates, model upgrades, and all the good stuff — at no extra cost.</p>
+      </div>
+    </div>
+
+    <!-- Section 4: What is the return/refund policy? -->
+    <div class="accordion" id="accordion4">
+      <div class="accordion-header" data-target="accordion4">
+        <span class="accordion-title">📋 What is the return/refund policy?</span>
+        <span class="accordion-chevron">▼</span>
+      </div>
+      <div class="accordion-body" style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding 0.35s ease; padding: 0 1rem;">
+        <p>Since the Beta pricing is already crazy low and we immediately start building infrastructure just for you (servers, AI models, the whole setup), Beta deposits can't be refunded — that stuff gets provisioned the second you hit submit.</p>
+        <p>But here's the thing: once our first Founding 5 spots are filled and we open up to the next tier, those clients get our standard refund policy instead. You can find the full legal details in our Terms of Service.</p>
+        <p>Bottom line: Founding 5 = non-refundable (but you're getting the best deal ever). Everyone after = standard refund policy applies.</p>
+      </div>
+    </div>
+
+    <!-- Section 5: How is my data stored and processed? -->
+    <div class="accordion" id="accordion5">
+      <div class="accordion-header" data-target="accordion5">
+        <span class="accordion-title">💬 How is my data stored and processed?</span>
+        <span class="accordion-chevron">▼</span>
+      </div>
+      <div class="accordion-body" style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding 0.35s ease; padding: 0 1rem;">
+        <p>Your data never leaves your control. Here's the simple version:</p>
+        <p>🔒 Local-first: We try to run everything on your own machine first — your data stays with you.</p>
+        <p>☁️ Private cloud fallback: If we need extra power, we use your API keys (not ours). You bring the key, you stay in control.</p>
+        <p>🛡️ Encrypted everywhere: AES-256 (military-grade) at rest and TLS 1.3 in transit. Nobody's snooping.</p>
+        <p>🚫 No training on your data: Zero-data-retention. We don't keep or train on your stuff. Period.</p>
+        <p>📝 Everything logged: Every action gets an audit trail — tamper-proof — so you always know what happened and when.</p>
+      </div>
+    </div>
+
+    <div class="footer-tag">Sovereign software, built at speed. &copy; Passaggio</div>
+  </div>
+
+  <script>
+    (function (d, t) {
+      var g = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      g.src = "https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
+      g.defer = true;
+      g.async = true;
+      s.parentNode.insertBefore(g, s);
+
+      // Safe initialization wrapper to prevent race conditions
+      var checkVapi = setInterval(function() {
+        if (window.vapiSDK && typeof window.vapiSDK.run === 'function') {
+          clearInterval(checkVapi);
+          window.vapiSDK.run({
+            apiKey: "5831729f-3982-4993-89d1-563225881ca0",
+            assistant: "5831729f-3982-4993-89d1-563225881ca0",
+            config: {
+              idle: {
+                color: "#D81B60", // Our exact brand cerise pink
+                type: "round"
+              }
+            }
+          });
+        }
+      }, 100);
+    })(document, "script");
+  </script>
+
+  <script type="module">
+    // Fallback form logic + secure presigned Vercel Blob uploads
+    const form = document.getElementById('intakeForm');
+    const statusEl = document.getElementById('status');
+    const submitBtn = document.getElementById('submitBtn');
+    const legalAgree = document.getElementById('legalAgree');
+    const fileList = document.getElementById('fileList');
+    const addFileBtn = document.getElementById('addFileBtn');
+
+    const uploadedFiles = [];
+
+    function updateSubmitState() {
+      submitBtn.disabled = !legalAgree.checked;
+    }
+    legalAgree.addEventListener('change', updateSubmitState);
+
+    function createFileRow() {
+      const row = document.createElement('div');
+      row.className = 'file-row';
+
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.className = 'file-input';
+
+      const label = document.createElement('label');
+      label.className = 'file-btn';
+      label.textContent = '📎 Choose file';
+      label.appendChild(input);
+
+      const nameSpan = document.createElement('span');
+      nameSpan.className = 'file-name';
+      nameSpan.textContent = 'No file selected';
+
+      const statusSpan = document.createElement('span');
+      statusSpan.className = 'file-status ready';
+      statusSpan.textContent = 'Ready';
+
+      row.appendChild(label);
+      row.appendChild(nameSpan);
+      row.appendChild(statusSpan);
+
+      input.addEventListener('change', async () => {
+        const file = input.files[0];
+        if (!file) return;
+        nameSpan.textContent = file.name;
+        statusSpan.className = 'file-status uploading';
+        statusSpan.textContent = 'Uploading…';
+
+        try {
+          const metaRes = await fetch(`/api/upload-url?filename=${encodeURIComponent(file.name)}&contentType=${encodeURIComponent(file.type || 'application/octet-stream')}`);
+          const meta = await metaRes.json();
+          if (!metaRes.ok || !meta.presigned_url) throw new Error(meta.error || 'Upload URL unavailable');
+
+          const uploadRes = await fetch(meta.presigned_url, {
+            method: 'PUT',
+            body: file,
+            headers: { 'Content-Type': file.type || 'application/octet-stream' },
+          });
+          if (!uploadRes.ok) throw new Error(`Upload failed: ${uploadRes.status}`);
+
+          // The public blob URL is the presigned URL with query params stripped.
+          const publicUrl = meta.presigned_url.split('?')[0];
+
+          uploadedFiles.push({
+            filename: file.name,
+            content_type: file.type || 'application/octet-stream',
+            size_bytes: file.size,
+            url: publicUrl,
+            pathname: meta.pathname,
+          });
+
+          statusSpan.className = 'file-status done';
+          statusSpan.textContent = 'Uploaded';
+        } catch (err) {
+          console.error('File upload error:', err);
+          statusSpan.className = 'file-status error';
+          statusSpan.textContent = 'Failed';
+        }
+      });
+
+      return row;
+    }
+
+    addFileBtn.addEventListener('click', () => {
+      fileList.appendChild(createFileRow());
+    });
+
+    // Seed one file row by default
+    fileList.appendChild(createFileRow());
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      statusEl.textContent = 'Submitting…';
+      statusEl.className = '';
+
+      // Strict validation for Full Name and Email
+      const clientNameInput = document.getElementById('client_name');
+      const emailInput = document.getElementById('email');
+      const clientName = clientNameInput.value.trim();
+      const email = emailInput.value.trim();
+
+      if (!clientName) {
+        statusEl.textContent = '✗ Please enter your full name.';
+        statusEl.className = 'error';
+        clientNameInput.focus();
+        return;
+      }
+
+      if (!email) {
+        statusEl.textContent = '✗ Please enter your email address.';
+        statusEl.className = 'error';
+        emailInput.focus();
+        return;
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        statusEl.textContent = '✗ Please enter a valid email address.';
+        statusEl.className = 'error';
+        emailInput.focus();
+        return;
+      }
+
+      if (!legalAgree.checked) {
+        statusEl.textContent = '✗ You must agree to the Terms & Conditions and Privacy Policy.';
+        statusEl.className = 'error';
+        return;
+      }
+
+      // Get reCAPTCHA token
+      let recaptchaToken = null;
+      try {
+        recaptchaToken = await grecaptcha.execute('6Le51iAtAAAAAFSLIu97ZNbIO76JodHPmzMUj32f', { action: "submit" });
+      } catch (err) {
+        console.warn("reCAPTCHA error:", err);
+      }
+
+      const payload = {
+        client_name: clientName,
+        email:       email,
+        transcript_text: document.getElementById('transcript_text').value.trim(),
+        file_metadata: uploadedFiles.length ? uploadedFiles : undefined,
+        recaptcha_token: recaptchaToken,
+      };
+
+      try {
+        const resp = await fetch('/api/intake?action=intake', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const data = await resp.json();
+        if (resp.ok) {
+          // Show Thank You card with smooth transition
+          const thankYouCard = document.getElementById('thankYouCard');
+          form.classList.add('hidden');
+          // Wait for form transition to finish before showing card
+          requestAnimationFrame(() => {
+            setTimeout(() => {
+              thankYouCard.classList.add('visible');
+              requestAnimationFrame(() => {
+                thankYouCard.classList.add('show');
+              });
+              form.style.display = 'none';
+            }, 350);
+          });
+          // Reset form behind the scenes
+          form.reset();
+          uploadedFiles.length = 0;
+          fileList.innerHTML = '';
+          fileList.appendChild(createFileRow());
+          updateSubmitState();
+        } else {
+          statusEl.textContent = `✗ ${data.error || 'Something went wrong.'}`;
+          statusEl.className = 'error';
+        }
+      } catch (err) {
+        statusEl.textContent = '✗ Unable to reach intake server. Please try again.';
+        statusEl.className = 'error';
+        console.error('Intake submission error:', err);
+      }
+    });
+
+    // Multi-section accordion toggle
+    document.querySelectorAll('.accordion-header').forEach(header => {
+      header.addEventListener('click', () => {
+        const targetId = header.getAttribute('data-target');
+        const accordion = document.getElementById(targetId);
+        const body = accordion.querySelector('.accordion-body');
+        const isOpen = accordion.classList.toggle('open');
+        if (isOpen) {
+          body.style.maxHeight = body.scrollHeight + 'px';
+          body.style.padding = '1rem';
+        } else {
+          body.style.maxHeight = '0';
+          body.style.padding = '0 1rem';
+        }
+      });
+    });
+
+    // Dynamic capacity status
+    async function updateCapacityStatus() {
+      try {
+        const resp = await fetch('/api/intake?status=capacity');
+        const data = await resp.json();
+        const banner = document.getElementById('capacityBanner');
+        if (data.is_at_capacity) {
+          banner.textContent = '📢 CURRENT STATUS: WAITLIST OPEN';
+          banner.style.background = '#fff3cd';
+          banner.style.borderColor = '#ffc107';
+          banner.style.color = '#856404';
+        } else {
+          banner.textContent = '📢 CURRENT STATUS: OPEN FOR ONE CLIENT';
+          banner.style.background = 'var(--accent-light)';
+          banner.style.borderColor = 'var(--accent)';
+          banner.style.color = 'var(--accent)';
+        }
+      } catch (err) {
+        console.error('Capacity status fetch failed:', err);
+      }
+    }
+    updateCapacityStatus();
+  </script>
+</body>
+</html>

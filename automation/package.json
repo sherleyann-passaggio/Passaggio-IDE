@@ -1,0 +1,18 @@
+{
+  "name": "passaggio-automation-pipeline",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Self-managed developer automation pipeline bridging VS Code (Cline), Telegram, and AWS Lambda for Remotion video rendering.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "telegraf": "^4.16.3",
+    "@remotion/lambda": "4.0.150",
+    "aws-sdk": "^2.1659.0",
+    "chokidar": "^3.6.0"
+  }
+}

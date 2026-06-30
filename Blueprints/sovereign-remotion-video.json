@@ -1,0 +1,46 @@
+{
+"name": "sovereign-remotion-video",
+"version": "0.2.0",
+"private": true,
+"description": "React compilation container for the Sovereign Studio Engine — Remotion pipeline with typed prop bridging to Python backend.",
+"author": "Sovereign Labs",
+"license": "UNLICENSED",
+"sideEffects": false,
+"scripts": {
+  "start": "remotion studio src/index.ts",
+  "studio": "remotion studio src/index.ts",
+  "dev": "remotion studio src/index.ts",
+  "build": "remotion render src/index.ts MyComposition",
+  "render": "remotion render src/index.ts MyComposition --props temp_props.json",
+  "bundle": "remotion bundle src/index.ts",
+  "upgrade": "remotion upgrade",
+  "lint": "eslint src --ext ts,tsx",
+  "lint:fix": "eslint src --ext ts,tsx --fix",
+  "typecheck": "tsc --noEmit"
+},
+"dependencies": {
+  "@remotion/cli": "4.0.150",
+  "@remotion/media-utils": "4.0.150",
+  "@remotion/player": "4.0.150",
+  "@remotion/spring": "4.0.150",
+  "react": "18.3.1",
+  "react-dom": "18.3.1",
+  "remotion": "4.0.150",
+  "zod": "3.23.8"
+},
+"devDependencies": {
+  "@types/node": "20.14.9",
+  "@types/react": "18.3.3",
+  "@types/react-dom": "18.3.0",
+  "@typescript-eslint/eslint-plugin": "7.15.0",
+  "@typescript-eslint/parser": "7.15.0",
+  "eslint": "8.57.0",
+  "eslint-plugin-react": "7.34.3",
+  "eslint-plugin-react-hooks": "4.6.2",
+  "typescript": "5.5.3"
+},
+"engines": {
+  "node": ">=18.0.0",
+  "npm": ">=9.0.0"
+}
+}

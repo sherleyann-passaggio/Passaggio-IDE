@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "lib": ["ES2022"],
+    "jsx": "react-jsx",
+    "rootDir": "./src",
+    "outDir": "./out",
+    "moduleResolution": "Bundler",
+    "ignoreDeprecations": "5.0",
+    "strict": true,
+    "esModuleInterop": true,
+    "types": ["node"],
+    "skipLibCheck": true
+  },
+  "include": [
+    "src/**/*",
+    "src/components/declarations.d.ts"
+  ],
+  "exclude": [
+    "node_modules", 
+    "out",
+    "**/remotion-video/**/*",
+    "/Blueprints/**/*"
+  ]
+}

@@ -1,0 +1,219 @@
+{
+  "name": "passaggio-ide",
+  "displayName": "Passaggio IDE",
+  "description": "Autonomous Control Center for sovereign development",
+  "version": "0.1.0",
+  "publisher": "sovereign-workstation",
+  "icon": "media/rocket.png",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "activationEvents": [
+    "onView:autonomousControlCenter",
+    "onView:passaggioChatView",
+    "onCommand:sovereign-workspace-ide.startWebhookServer",
+    "onCommand:sovereign-workspace-ide.showLastLead",
+    "onCommand:sovereign-workspace-ide.exportLeads",
+    "onView:intakePipelineView"
+  ],
+  "categories": [
+    "Other",
+    "Machine Learning"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "sovereign-workspace-ide.refresh",
+        "title": "Refresh Swarm View",
+        "category": "Passaggio",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "sovereign-workspace-ide.runOrchestrator",
+        "title": "Run Self-Healing Agent",
+        "category": "Passaggio",
+        "icon": "$(debug-start)"
+      },
+      {
+        "command": "sovereign-workspace-ide.exportTelemetry",
+        "title": "Export Telemetry to Desktop",
+        "category": "Passaggio",
+        "icon": "$(desktop-download)"
+      },
+      {
+        "command": "sovereign-workspace-ide.openSettings",
+        "title": "Open AI Provider Settings",
+        "category": "Passaggio",
+        "icon": "$(gear)"
+      },
+      {
+        "command": "sovereign-workspace-ide.openEditorChat",
+        "title": "Open Chat in Editor Tab",
+        "category": "Passaggio",
+        "icon": "$(comment-discussion)"
+      },
+      {
+        "command": "sovereign-workspace-ide.astIndex",
+        "title": "Index Workspace AST",
+        "category": "Passaggio",
+        "icon": "$(symbol-interface)"
+      },
+      {
+        "command": "sovereign-workspace-ide.quickAgent",
+        "title": "Activate Hermes Daemon",
+        "category": "Passaggio",
+        "icon": "$(zap)"
+      },
+      {
+        "command": "sovereign-workspace-ide.startWebhookServer",
+        "title": "Start Voice Agent Webhook Server",
+        "category": "Passaggio",
+        "icon": "$(globe)"
+      },
+      {
+        "command": "sovereign-workspace-ide.showLastLead",
+        "title": "Show Last Received Lead",
+        "category": "Passaggio",
+        "icon": "$(person)"
+      },
+      {
+        "command": "sovereign-workspace-ide.exportLeads",
+        "title": "Export Lead Logs to Desktop",
+        "category": "Passaggio",
+        "icon": "$(file-export)"
+      },
+      {
+        "command": "sovereign-workspace-ide.refreshIntakes",
+        "title": "Refresh Intake Pipeline",
+        "category": "Passaggio",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "sovereign-workspace-ide.openIntakeFile",
+        "title": "Open Intake File",
+        "category": "Passaggio",
+        "icon": "$(file)"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "passaggio-sidebar",
+          "title": "Autonomous Control Center",
+          "icon": "media/rocket.svg"
+        }
+      ]
+    },
+    "views": {
+      "passaggio-sidebar": [
+        {
+          "id": "autonomousControlCenter",
+          "name": "Control Center"
+        },
+        {
+          "id": "passaggioChatView",
+          "name": "Passaggio Swarm Assistant",
+          "type": "webview"
+        },
+        {
+          "id": "intakePipelineView",
+          "name": "📋 Intake Pipeline"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Passaggio IDE Settings",
+      "properties": {
+        "sovereign-workspace-ide.vertexAi.projectId": {
+          "type": "string",
+          "default": "",
+          "description": "Google Cloud Vertex AI Project ID"
+        },
+        "sovereign-workspace-ide.vertexAi.location": {
+          "type": "string",
+          "default": "us-central1",
+          "description": "Vertex AI Region"
+        },
+        "sovereign-workspace-ide.vertexAi.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "Vertex AI API Key"
+        },
+        "sovereign-workspace-ide.cohere.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "Cohere API Key"
+        },
+        "sovereign-workspace-ide.cohere.model": {
+          "type": "string",
+          "default": "command-r-plus",
+          "description": "Cohere Model ID"
+        },
+        "sovereign-workspace-ide.hermes.cliPath": {
+          "type": "string",
+          "default": "hermes",
+          "description": "Local Hermes CLI Executable Path"
+        },
+        "sovereign-workspace-ide.hermes.modelPath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to local Hermes/Ollama model checkpoint"
+        },
+        "sovereign-workspace-ide.telemetry.storagePath": {
+          "type": "string",
+          "default": "~/.hermes/trajectory",
+          "description": "Path to trajectory storage files"
+        },
+        "sovereign-workspace-ide.sandbox.timeout": {
+          "type": "number",
+          "default": 120000,
+          "description": "Maximum execution threshold for agent sandbox processing in milliseconds"
+        },
+        "sovereign-workspace-ide.webhook.port": {
+          "type": "number",
+          "default": 8787,
+          "description": "TCP port for the local webhook server that receives voice-agent lead data"
+        },
+        "sovereign-workspace-ide.webhook.autoStart": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically start the webhook server when the extension activates"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile",
+    "test": "node ./out/test/runTest.js",
+    "docs": "typedoc"
+  },
+    "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile",
+    "test": "node ./out/test/runTest.js",
+    "docs": "typedoc",
+    "bridge": "node telegram_bridge.js"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.41",
+    "@types/react": "^19.2.16",
+    "@types/react-dom": "^19.2.3",
+    "@types/vscode": "^1.85.0",
+    "typedoc": "^0.28.18",
+    "typescript": "^5.3.2"
+  },
+  "dependencies": {
+    "@react-three/fiber": "^8.17.10",
+    "dotenv": "^17.4.2",
+    "remotion": "^4.0.471",
+    "stripe": "^17.4.0",
+    "telegraf": "^4.16.3",
+    "zod": "^4.4.3"
+  }
+}

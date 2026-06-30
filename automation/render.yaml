@@ -1,0 +1,45 @@
+# ─── Passaggio Automation — Render Blueprint ─────────────────────────────────
+# Render Blueprint (Infrastructure as Code) for 1-click cloud deployment.
+# https://render.com/docs/blueprint-spec
+#
+# Deploy:
+#   1. Push this repo to GitHub
+#   2. On Render dashboard: New → Blueprint → Connect your repo
+#   3. Set TELEGRAM_TOKEN and other secrets as environment variables
+#   4. Deploy — Render auto-detects this render.yaml
+
+services:
+  - type: web
+    name: passaggio-automation
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    repo: https://github.com/sherleyann-passaggio/Passaggio-IDE  # Your GitHub repo
+    branch: main
+    healthCheckPath: /
+    envVars:
+      - key: ENVIRONMENT
+        value: cloud
+      - key: PORT
+        value: "8080"
+      - key: NODE_ENV
+        value: production
+      - key: TELEGRAM_TOKEN
+        sync: false  # Set via Render dashboard — never commit secrets
+      - key: ALLOWED_USER_ID
+        sync: false
+      - key: AWS_ACCESS_KEY_ID
+        sync: false
+      - key: AWS_SECRET_ACCESS_KEY
+        sync: false
+      - key: NVIDIA_API_KEY
+        sync: false
+      - key: OPENROUTER_API_KEY
+        sync: false
+      # ── Add any additional secrets below with sync: false ──
+    disks:
+      - name: automation-data
+        mountPath: /app/scripts
+        sizeGB: 1
+      - name: automation-media
+        mountPath: /app/public/images
+        sizeGB: 2

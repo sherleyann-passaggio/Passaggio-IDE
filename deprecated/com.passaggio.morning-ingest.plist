@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Service identity -->
+    <key>Label</key>
+    <string>com.passaggio.morning-ingest</string>
+
+    <!-- 08:00 every day -->
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>8</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+
+    <!-- Run even if Mac is asleep (will wake briefly) -->
+    <key>RunAtLoad</key>
+    <false/>
+
+    <!-- Standard I/O environment -->
+    <key>StandardOutPath</key>
+    <string>/Users/sherleybelleus/Library/Logs/passaggio/morning-ingest.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/Users/sherleybelleus/Library/Logs/passaggio/morning-ingest.error.log</string>
+
+    <!-- The executable -->
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/zsh</string>
+        <string>/Users/sherleybelleus/Library/Mobile Documents/com~apple~CloudDocs/Passaggio IDE/schedule_morning_ingest.sh</string>
+    </array>
+
+    <!-- Environment variables the script may need -->
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin</string>
+        <key>PYTHONPATH</key>
+        <string>/usr/local/lib/python3.11/site-packages</string>
+    </dict>
+</dict>
+</plist>

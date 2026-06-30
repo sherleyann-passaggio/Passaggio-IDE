@@ -1,0 +1,44 @@
+{
+  "_schema": "PremiumShortCompositionProps v3.0",
+  "_episode": "Ep.15 | CCP v3.0 Icon-Driven Short",
+  "_generatedBy": "render.py — Content Creation Protocol v3.0",
+
+  "voiceoverUrl": "./audio/voiceover.mp3",
+  "timestamps": [
+    { "word": "STILL", "start": 0.0, "end": 0.4 },
+    { "word": "TRACKING", "start": 0.4, "end": 0.9 },
+    { "word": "BACKGROUND", "start": 0.9, "end": 1.4 },
+    { "word": "CHECKS", "start": 1.4, "end": 1.8 },
+    { "word": "MANUALLY", "start": 1.8, "end": 2.4 },
+    { "word": "ONE", "start": 3.0, "end": 3.3 },
+    { "word": "CLICK", "start": 3.3, "end": 3.7 },
+    { "word": "VERIFIED", "start": 3.7, "end": 4.2 },
+    { "word": "SAFE", "start": 4.2, "end": 4.6 },
+    { "word": "DEPLOY", "start": 5.0, "end": 5.5 },
+    { "word": "IN", "start": 5.5, "end": 5.7 },
+    { "word": "24", "start": 5.7, "end": 6.0 },
+    { "word": "HOURS", "start": 6.0, "end": 6.5 }
+  ],
+
+  "iconNames": ["Shield", "CheckCircle", "MousePointerClick"],
+  "audioCueTimeline": [
+    { "timeMs": 0, "cueType": "music", "note": "intro bed" },
+    { "timeMs": 0, "cueType": "voice", "word": "STILL", "iconName": "Shield" },
+    { "timeMs": 400, "cueType": "voice", "word": "TRACKING", "iconName": "Shield" },
+    { "timeMs": 900, "cueType": "voice", "word": "BACKGROUND", "iconName": "Shield" },
+    { "timeMs": 1400, "cueType": "voice", "word": "CHECKS", "iconName": "Shield" },
+    { "timeMs": 1800, "cueType": "voice", "word": "MANUALLY", "iconName": "Shield" },
+    { "timeMs": 3000, "cueType": "voice", "word": "ONE", "iconName": "MousePointerClick" },
+    { "timeMs": 3300, "cueType": "voice", "word": "CLICK", "iconName": "MousePointerClick" },
+    { "timeMs": 3700, "cueType": "voice", "word": "VERIFIED", "iconName": "CheckCircle" },
+    { "timeMs": 4200, "cueType": "voice", "word": "SAFE", "iconName": "CheckCircle" },
+    { "timeMs": 5000, "cueType": "voice", "word": "DEPLOY", "iconName": "CheckCircle" },
+    { "timeMs": 5500, "cueType": "voice", "word": "IN", "iconName": "CheckCircle" },
+    { "timeMs": 5700, "cueType": "voice", "word": "24", "iconName": "CheckCircle" },
+    { "timeMs": 6000, "cueType": "voice", "word": "HOURS", "iconName": "CheckCircle" },
+    { "timeMs": 6500, "cueType": "sfx", "note": "cta punch" }
+  ],
+
+  "hookText": "STOP TRACKING CHECKS MANUALLY",
+  "ctaKeyword": "SAFE"
+}

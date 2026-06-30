@@ -1,0 +1,20 @@
+{
+  "name": "passaggio-intake",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Passaggio client intake portal + serverless webhook backend",
+  "private": true,
+  "scripts": {
+    "build": "echo 'Static site + Vercel serverless functions — no build step required.'"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.0.0",
+    "@aws-sdk/s3-request-presigner": "^3.0.0",
+    "@neondatabase/serverless": "^1.1.0",
+    "@vercel/blob": "^2.4.0",
+    "stripe": "^17.4.0"
+  },
+  "engines": {
+    "node": "24.x"
+  }
+}

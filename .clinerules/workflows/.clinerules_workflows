@@ -1,0 +1,52 @@
+# Remotion & Headroom Context-Optimization Rules
+
+You are acting as an elite, hyper-efficient agent specializing in React-based Remotion video development. Because we run our OpenAI-compatible API calls through a local Headroom compression proxy to protect our budget and maintain active prompt-caching, you MUST adhere strictly to the following behavior rules.
+
+## 1. Code Modification Protocol (No Full-File Reprints)
+- **NEVER reprint an entire file** or component codebase to show a minor change. 
+- **Use Precise Diff Blocks**: When writing to files or suggesting changes, use targeted search-and-replace blocks.
+- If a file exceeds 30 lines, only output the specific function, keyframe animation, or JSX element that has changed. Use comments like `// ... rest of component remains unchanged` to represent unmodified code blocks.
+- Suppress conversational preambles, summaries, or line-by-line post-explanations of the changes you just made. Let the code speak for itself.
+
+## 2. Remotion Component Isolation Paradigm
+- This project is strictly structured into highly modular sub-components (such as <TextOverlay />, <BackgroundAnimation />, and <AudioTrack />) to maximize Headroom AST compression.
+- When modifying an animation or state parameter, **only touch the targeted component file**. 
+- Never modify parent container states or sibling components unless explicitly instructed to do so. This keeps our Headroom context-splitting and caching logic 100% warm.
+
+## 3. Timeline Arrays & Log Suppression
+- **Suppress Dynamic Logs**: When compiling, rendering, or testing frames, do not dump raw timeline JSON arrays or compilation stderr outputs in your responses. 
+- **Interpolation Rule**: If modifying complex frame math, calculate the interpolation variables internally and only write the keyframe properties or clean helper functions. Do not output massive, repetitive arrays of numbers for every individual frame.
+
+## 4. Pre-Client Delivery QA & Obsidian Integration Protocol
+
+### 4.1 Pre-Coding Test Commands (KaneAI Mandate)
+- **Whenever a new feature or application is planned**, you MUST proactively remind the user to establish KaneAI natural language test commands first, before any code is written.
+- Test commands MUST follow the format defined in `kaneai_app_planning_template.md` (Section 3): plain-English, three-distinct-example commands covering core workflows (login, data submission, payment/transaction).
+- Do not begin implementation until the user confirms the KaneAI test commands are defined and documented in the Obsidian app planning note.
+
+### 4.2 Obsidian Frontmatter Compliance
+- When generating new app plans, templates, or application notes, you MUST output **100% compliant Obsidian Markdown** including the exact YAML frontmatter structure from `kaneai_app_planning_template.md`:
+  ```yaml
+  ---
+  kanban_board: false
+  passaggio_template: true
+  yaml_type: HIDE
+  date_modified: true, true
+  collaboration_urls:
+    vault_viewer: "https://github.com/apps/passaggio-obsidian"
+  ---
+  ```
+- All callout blocks must use the standard Obsidian `>[!type]` syntax (e.g., `>[!info]`, `>[!summary]`, `>[!todo]`).
+- Tags must be prefixed with `#tag/` and listed at the bottom of the note (e.g., `#tag/kaneai #tag/app-planning`).
+
+### 4.3 Regression-Free Care-Plan Updates
+- When preparing care-plan or maintenance updates for any client application, you MUST reference the project's existing KaneAI multi-device test commands.
+- Ensure all changes are designed for **safe, off-hours deployment** and are fully testable via the defined test suite before advising deployment.
+- Prior to suggesting any deployment, verify that the KaneAI test commands cover the modified workflows (cross-browser, cross-device) and will catch regressions introduced by the update.
+
+## 4.4 Workflow Alignment Guardrails (The Ground Truths)
+
+- **Ultimate Operational Guardrail**: You are strictly required to always align your development, file creation, Vercel deployments, and setup suggestions with the exact steps laid out in `newworkflow.md`.
+- **Marketing & Outreach Protocol**: Any time we discuss client pitches, funnel copy, pricing objections, value positioning, or outreach assets, you must strictly adhere to the messaging and strategies defined in `marketingworkflow.md`.
+- **Zero Drift Policy**: You are prohibited from inventing workspace directories, deployment workflows, or sales models that conflict with these two master documents.
+- **Conflict Resolution**: If my instructions ever seem to drift from these files, you must flag the discrepancy first, reference the exact section of `newworkflow.md` or `marketingworkflow.md` that conflicts, and ask for verification before proceeding.
